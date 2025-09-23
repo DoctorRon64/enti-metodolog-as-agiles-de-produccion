@@ -1,7 +1,7 @@
 var config = {
     type:Phaser.AUTO,
-    width:370,
-    height:680,
+    width:128,
+    height:256,
     scene:[gameState], 
     render:{
         pixelArt: true
