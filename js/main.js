@@ -1,8 +1,8 @@
 var config = {
     type:Phaser.AUTO,
-    width:128,
-    height:256,
-    scene:[gameState], 
+    width:370,
+    height:550,
+    scene:[MenuScene, BirdScene, LinkScene], 
     render:{
         pixelArt: true
     }
