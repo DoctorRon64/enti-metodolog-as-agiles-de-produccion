@@ -52,38 +52,42 @@ class LinkScene extends Phaser.Scene {
     }
 
     update() {
-        const speed = 1;
-        const prevAnim = this.player.anims.currentAnim?.key;
-        if (this.cursors.right.isDown) {
-            this.movePlayer(speed, 0);
-            if (prevAnim !== 'walk-right') this.player.anims.play('walk-right', true);
-        } else if (this.cursors.left.isDown) {
-            this.movePlayer(-speed, 0);
-            if (prevAnim !== 'walk-left') this.player.anims.play('walk-left', true);
-        }
+    let dir = null;
+    if (this.cursors.right.isDown)  dir = 'right';
+    else if (this.cursors.left.isDown) dir = 'left';
+    else if (this.cursors.up.isDown)   dir = 'up';
+    else if (this.cursors.down.isDown) dir = 'down';
 
-        if (this.cursors.up.isDown) {
-            this.movePlayer(0, -speed);
-            if (prevAnim !== 'walk-up') this.player.anims.play('walk-up', true);
-        } else if (this.cursors.down.isDown) {
-            this.movePlayer(0, speed);
-            if (prevAnim !== 'walk-down') this.player.anims.play('walk-down', true);
-        }
-
-        if (!this.cursors.left.isDown && !this.cursors.right.isDown &&!this.cursors.up.isDown   && !this.cursors.down.isDown) {
-            this.player.anims.stop();
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.keyOne)) {
-            this.scene.start('Bird');
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.keyTwo)) {
-                this.scene.start('Link');
-        }
+    const speed = 4;
+    if (dir) {
+      switch (dir) {
+        case 'right': this.movePlayer(speed, 0); break;
+        case 'left':  this.movePlayer(-speed, 0); break;
+        case 'up':    this.movePlayer(0, -speed); break;
+        case 'down':  this.movePlayer(0, speed); break;
+      }
     }
 
-    movePlayer(dx, dy) {
-        const speed = 4;
-        this.player.x += dx * speed;
-        this.player.y += dy * speed;
+    const prevAnim = this.player.anims.currentAnim?.key;
+
+    if (dir) {
+      const animKey = `walk-${dir}`;
+      if (prevAnim !== animKey) this.player.anims.play(animKey, true);
+    } else {
+      this.player.anims.stop();
     }
+
+  
+    if (Phaser.Input.Keyboard.JustDown(this.keyOne)) {
+      this.scene.start('Bird');
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.keyTwo)) {
+      this.scene.start('Link');
+    }
+  }
+
+  movePlayer(dx, dy) {
+    this.player.x += dx;
+    this.player.y += dy;
+  }
 }
