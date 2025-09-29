@@ -25,10 +25,10 @@ class BirdScene extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keyOne = this.input.keyboard.addKey(
-        Phaser.Input.Keyboard.KeyCodes.ONE
+            Phaser.Input.Keyboard.KeyCodes.ONE
         );
         this.keyTwo = this.input.keyboard.addKey(
-        Phaser.Input.Keyboard.KeyCodes.TWO
+            Phaser.Input.Keyboard.KeyCodes.TWO
         );
     }
 
@@ -62,10 +62,10 @@ class BirdScene extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.keyOne)) {
             this.scene.start('Bird');
-            }
+        }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyTwo)) {
-        this.scene.start('Link');
+            this.scene.start('Link');
         }
     }
 

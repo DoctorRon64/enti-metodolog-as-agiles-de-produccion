@@ -20,7 +20,7 @@ class MenuScene extends Phaser.Scene {
       strokeThickness: 2
     };
 
-    const lineGap = 40;
+    const lineGap = 100;
     const option1 = this.add.text(configWidth / 2, configHeight / 2 - lineGap /2, 'Press 1 for BirdScene', txtStyle).setOrigin(0.5);
     const option2 = this.add.text(configWidth / 2, configHeight / 2 + lineGap /2, 'Press 2 for LinkScene', txtStyle).setOrigin(0.5);
 
@@ -32,14 +32,9 @@ class MenuScene extends Phaser.Scene {
       repeat: -1
     });
 
-    this.keyOne = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ONE
-    );
-    this.keyTwo = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.TWO
-    );
+    this.keyOne = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+    this.keyTwo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
   }
-
 
   update() {
     if (Phaser.Input.Keyboard.JustDown(this.keyOne)) {
