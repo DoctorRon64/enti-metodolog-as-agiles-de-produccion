@@ -48,22 +48,27 @@ class LinkScene extends Phaser.Scene {
   }
 
   update() {
-    const speed = 4;
+    var speed = config.link_speed;
+    const scrollSpeed = 10;
     if (this.cursors.right.isDown) {
       this.movePlayer(speed, 0);
       this.player.anims.play('walk-right', true);
+      this.grass.tilePositionX += scrollSpeed - speed;
     }
     else if (this.cursors.left.isDown) {
       this.movePlayer(-speed, 0);
       this.player.anims.play('walk-left', true);
+      this.grass.tilePositionX -= scrollSpeed;
     }
     else if (this.cursors.up.isDown) {
       this.movePlayer(0, -speed);
       this.player.anims.play('walk-up', true);
+      this.grass.tilePositionY -= scrollSpeed;
     }
     else if (this.cursors.down.isDown) {
       this.movePlayer(0, speed);
       this.player.anims.play('walk-down', true);
+      this.grass.tilePositionY += scrollSpeed;
     } else {
       this.player.anims.stop();
     }
