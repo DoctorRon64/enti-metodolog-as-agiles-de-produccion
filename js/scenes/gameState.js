@@ -10,6 +10,8 @@ class gameState extends Phaser.Scene {
         this.load.image('bgback', 'background_back.png');
         this.load.image('bgfront', 'background_frontal.png');
         this.load.image('bullet', 'spr_bullet_0.png');
+
+        this.load.spritesheet('explosion', 'explosion.png', {frameWidth:16 , frameHeight:16});
         this.load.spritesheet('enemy', 'enemy-medium.png', {frameWidth:32, frameHeight:16});
         this.load.spritesheet('player', 'spr_player.png', {frameWidth:16, frameHeight:24} );
     }
@@ -39,6 +41,13 @@ class gameState extends Phaser.Scene {
         );
 
         this.spawnEnemy();
+            this.physics.add.overlap (
+            this.bulletPool,
+            this.enemyPool,
+            this.KillEnemy,
+            null,
+            this
+        );
     }
 
     loadAnimations() {
@@ -70,6 +79,14 @@ class gameState extends Phaser.Scene {
             repeat:-1,
             yoyo:true
         })
+        this.anims.create({
+            key: 'explosion_fire',
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: 0,
+            showOnStart: true,
+            hideOnComplete: true
+        })
     }
 
     loadPools() {
@@ -78,13 +95,14 @@ class gameState extends Phaser.Scene {
             classType: Enemy,
             runChildUpdate: true
         })
+        this.explosionPool = this.add.group();
     }
 
     createBullet() {
         var bullet = this.bulletPool.getFirst(false);
         if (!bullet) {
             console.log('create bullet');
-            bullet = this.add.image(this.player.x, this.player.body.top, 'bullet');
+            bullet = this.physics.add.sprite(this.player.x, this.player.body.top, 'bullet');
             bullet.setOrigin(.5,1);
             this.bulletPool.add(bullet);
         } else {
@@ -95,62 +113,79 @@ class gameState extends Phaser.Scene {
         bullet.body.setVelocityY(gamePrefs.BULLET_SPEED);
     }
 
-    createEnemy() {
-        const enemy = this.enemyPool.get();
-        if (enemy) {
-            enemy.Initialize(
-                Phaser.Math.Between(0, config.width),
-                Phaser.Math.Between(-50, 0),
-                .01, .01
-            );
-            enemy.anims.play('enemy_idle');
-        }
-    }
-
     spawnEnemy() {
         const width = config.width;
         const height = config.height;
-
         const enemy = this.enemyPool.get();
         if (enemy) {
             const x = Phaser.Math.Between(width, 0);
-            const y = enemy.height;
-            const vx = Phaser.Math.FloatBetween(-50, 50);
-            const vy = Phaser.Math.FloatBetween(50, 150);
+            const y = 0 + enemy.height;
+            const vx = Phaser.Math.FloatBetween(-gamePrefs.ENEMY_SPEED, gamePrefs.ENEMY_SPEED);
+            const vy = Phaser.Math.FloatBetween(gamePrefs.ENEMY_SPEED, gamePrefs.ENEMY_SPEED * 3);
 
             enemy.Initialize(x, y, vx, vy);
-            enemy.anims.play('enemy_idle');
         }
 
         this.time.addEvent({
-            delay: Phaser.Math.Between(500, 2000),
+            delay: Phaser.Math.Between(.5, 2) * 1000,
             callback: this.spawnEnemy,
             callbackScope: this
         });
+
+
+    }
+
+    createExplosion(bullet) {
+        var explosion = this.explosionPool.getFirst(false);
+
+        if (!explosion) {
+            explosion = new Explosion(this, bullet.x, bullet.y, 'explosion');
+            this.explosionPool.add(explosion);
+        } else {
+           explosion.active = true;
+           explosion.setActive(true);
+           explosion.setVisible(true);
+           explosion.x= bullet.x;
+           explosion.y= bullet.y;
+           explosion.anims.play('explosion_fire');
+        }
+    }
+
+    KillEnemy(bullet, enemy) {
+        this.createExplosion(bullet);
+        bullet.setActive(false);
+        bullet.body.reset(-100,-100);
+
+        console.log(enemy.health);
+        if (enemy.health > 0) {
+            enemy.health --;
+        } else {
+            enemy.setActive(false);
+            enemy.die();
+        }
     }
 
     update() {
-        this.bgback.tilePositionY -= .25;
+        this.bgback.tilePositionY -= 0.25;
         this.bgfront.tilePositionY -= 3;
         var speed = gamePrefs.PLAYER_SPEED;
 
         if (this.key_right.isDown) {     
-            this.setDir(speed,0);  
+            this.setDir(speed, 0);  
             this.player.anims.play('fly_right', true);  
-        }
-        else if (this.key_left.isDown) {     
-            this.setDir(-speed,0);   
+        } else if (this.key_left.isDown) {     
+            this.setDir(-speed, 0);   
             this.player.anims.play('fly_left', true);    
-        }
-        else if (this.key_up.isDown) {     
-            this.setDir(0,-speed);    
+        } else if (this.key_up.isDown) {     
+            this.setDir(0, -speed);    
             this.player.anims.play('idle', true);   
-        }
-        else if (this.key_down.isDown) {     
-            this.setDir(0,speed);   
+        } else if (this.key_down.isDown) {     
+            this.setDir(0, speed);   
             this.player.anims.play('idle', true);    
         } else {
             this.player.anims.play('idle', true);
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
         }
     }
 

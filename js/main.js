@@ -1,6 +1,7 @@
 var gamePrefs = {
     PLAYER_SPEED:2,
-    BULLET_SPEED:-100
+    BULLET_SPEED:-100,
+    ENEMY_SPEED: 50
 }
 
 var config = {

@@ -11,6 +11,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5, 1);
         this.setActive(false);
         this.setVisible(false);
+        
+        this.health = 2;
+        this.anims.play('enemy_idle');
     }
 
     Initialize(x, y, vx, vy) {
@@ -42,11 +45,17 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         if (this.y >= bounds.height) {
             this.y = bounds.height;
-            this.setActive(false);
-            this.setVisible(false);
-            this.body.velocity.x = 0;
-            this.body.velocity.y = 0;
-            this.body.enable = false;
+            this.die();
         }
+    }
+
+    die() {
+        this.body.enable = false;
+        this.setActive(false);
+        this.setVisible(false);
+        
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 0;
+        this.body.reset(-200,-200);
     }
 }
