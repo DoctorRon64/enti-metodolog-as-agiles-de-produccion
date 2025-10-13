@@ -1,7 +1,11 @@
 var gamePrefs = {
     PLAYER_SPEED:2,
-    BULLET_SPEED:-100,
-    ENEMY_SPEED: 50
+    PLAYER_ACCELERATION: 50,
+    PLAYER_SHIELD: 5,
+    BULLET_SPEED:-150,
+    ENEMY_BULLET_SPEED: -250,
+    ENEMY_SPEED: 50,
+    ENEMY_HEALTH: 5
 }
 
 var config = {

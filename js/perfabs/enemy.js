@@ -12,7 +12,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setActive(false);
         this.setVisible(false);
         
-        this.health = 2;
+        this.health = gamePrefs.ENEMY_HEALTH;
         this.anims.play('enemy_idle');
     }
 
