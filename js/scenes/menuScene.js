@@ -21,12 +21,12 @@ class menuScene extends Phaser.Scene {
         this.player.anims.play('idle');
 
         this.title = this.add.text (
-            config.widht/2,
-            config.height/275,
+            config.width/2,
+            config.height/2-75,
             "Shooter in 2D",
             {
-                fontFamily: 'sans-serif',
-                fill: "#ffffffff",
+                fontFamily: '"Helvetica Neue", Arial, sans-serif',
+                color: "#ffffffff",
                 stroke: "#0037ffff",
                 strokeThickness: 4,
             }
