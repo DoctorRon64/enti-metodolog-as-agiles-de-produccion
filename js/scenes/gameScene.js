@@ -34,7 +34,7 @@ class gameState extends Phaser.Scene {
         this.spawnEnemy();
         this.loadCollision();
 
-        this.shield = this.add.sprite(33 , 0, 'shield').setOrigin(0, 0).setScrollFactor(0).setScale(1).setDepth(100);
+        this.shield = this.add.sprite(0, 0, 'shield').setOrigin(0, 0).setScrollFactor(0).setScale(1).setDepth(100);
         this.shieldHits = 0;
     }
 
@@ -152,7 +152,8 @@ class gameState extends Phaser.Scene {
         let eBullet = this.enemyBulletPool.getFirst(false);
         if (!eBullet) {
             eBullet = this.physics.add.sprite(posX, posY, 'enemyBullet');
-            eBullet.setOrigin(0.5, 1);
+            eBullet.setOrigin(0.5, 0.5);
+            eBullet.angle = 180;
             eBullet.hasHit = false;
             this.enemyBulletPool.add(eBullet);
         }
@@ -177,7 +178,7 @@ class gameState extends Phaser.Scene {
         }
 
         this.time.addEvent({
-            delay: Phaser.Math.FloatBetween(0.5, 1.5) * 1000,
+            delay: Phaser.Math.FloatBetween(0.8, 1.5) * 1000,
             callback: () => {
                 if (enemy.active) {
                     this.createEnemyBullet(enemy.x, enemy.y);
@@ -215,7 +216,6 @@ class gameState extends Phaser.Scene {
         bullet.setActive(false);
         bullet.body.reset(-100,-100);
 
-        console.log(enemy.health);
         if (enemy.health > 0) {
             enemy.health --;
         } else {
@@ -245,11 +245,13 @@ class gameState extends Phaser.Scene {
             repeat: 1
         });
 
+        player.alpha = 1;
+
         if (this.shieldHits >= gamePrefs.PLAYER_SHIELD) {
             this.RestartLevel();
         }
 
-        this.time.delayedCall(1000, () => {
+        this.time.delayedCall(1500, () => {
             enemyBullet.hasHit = false;
             enemyBullet.body.enable = true;
         });
