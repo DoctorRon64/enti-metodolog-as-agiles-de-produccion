@@ -1,4 +1,4 @@
-class gameState extends Phaser.Scene {
+class gameScene extends Phaser.Scene {
     constructor() {
         super({key:"gameScene"});
     }
@@ -267,8 +267,8 @@ class gameState extends Phaser.Scene {
     }
 
     update() {
-        this.bgback.tilePositionY -= 0.25;
-        this.bgfront.tilePositionY -= 3;
+        this.bgback.tilePositionY -= gamePrefs.BACKGROUND_BACK_SPEED;
+        this.bgfront.tilePositionY -= gamePrefs.BACKGROUND_FRONT_SPEED;
         const speed = gamePrefs.PLAYER_SPEED;
 
         if (this.key_right.isDown) {     
