@@ -32,5 +32,7 @@
 1,8,3,9,5,2,3,1,7,7,4,7,3,4,1,11,11,3,9,10,8,1,1,7,1,10,1,1,10,2,2,7,3,6,5,1,10,11,11,1
 </data>
  </layer>
- <imagelayer id="2" name="Image Layer 1"/>
+ <imagelayer id="2" name="Image Layer 1" opacity="0.5">
+  <image source="../maps/level_1.jpg" width="1286" height="808"/>
+ </imagelayer>
 </map>
