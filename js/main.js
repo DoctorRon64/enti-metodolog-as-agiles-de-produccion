@@ -1,33 +1,25 @@
 var gamePrefs = {
-    PLAYER_SPEED:2,
-    PLAYER_ACCELERATION: 50,
-    PLAYER_SHIELD: 5,
-    BULLET_SPEED:-80,
-    ENEMY_BULLET_SPEED: -100,
-    ENEMY_SPEED: 25,
-    ENEMY_HEALTH: 5,
-    BACKGROUND_BACK_SPEED: 0.25,
-    BACKGROUND_FRONT_SPEED: 3
+    gameWidth:960,
+    gameHeight:540,
+    levelWidth:1280,
+    levelHeight:800,
+    GRAVITY:1000
 }
 
 var config = {
     type:Phaser.AUTO,
-    width:128,
-    height:256,
-    scene:[menuScene, gameScene], 
+    width: gamePrefs.gameWidth,
+    height: gamePrefs.gameHeight,
+    scene:[level1], 
     render:{
         pixelArt: true
     },
     physics:{
         default:'arcade',
         arcade: {
-            gravity:{y:0},
+            gravity:{y:gamePrefs.GRAVITY},
             debug:false
         }
-    },
-    scale: {
-        mode:Phaser.Scale.FIT,
-        autoCenter:Phaser.Scale.CENTER_BOTH
     }
 }
 
