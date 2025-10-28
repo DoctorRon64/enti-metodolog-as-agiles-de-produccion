@@ -8,8 +8,6 @@ class menuScene extends Phaser.Scene {
         this.load.image('bgfront', 'background_frontal.png');
         this.load.image('btn', 'btn.png');
 
-
-
         this.load.spritesheet('player', 'spr_player.png', {frameWidth:16, frameHeight:24} );
     }    
     create() {
@@ -26,12 +24,38 @@ class menuScene extends Phaser.Scene {
             "Shooter in 2D",
             {
                 fontFamily: '"Helvetica Neue", Arial, sans-serif',
+                fontSize: '20px',
                 color: "#ffffffff",
                 stroke: "#0037ffff",
                 strokeThickness: 4,
             }
         ).setOrigin(.5);
-    
+
+
+        this.highScore = gamePrefs.getData('HighScore', 0);
+        this.highScore = this.add.text (
+            config.width/2,
+            config.height/2-50,
+            `HighScore ${this.highScore}`,
+            {
+                fontFamily: '"Helvetica Neue", Arial, sans-serif',
+                color: "#ffffffff",
+                fontSize: '14px',
+            }
+        ).setOrigin(.5);
+
+        this.score = gamePrefs.getData('Score', 0);
+        this.score = this.add.text (
+            config.width/2,
+            config.height/2-35,
+            `Last Score ${this.score}`,
+            {
+                fontFamily: '"Helvetica Neue", Arial, sans-serif',
+                color: "#ffffffff",
+                fontSize: '14px',
+            }
+        ).setOrigin(.5);
+
         this.button = this.add.image(config.width/2, config.height/2+75, 'btn')
         .setScale(.25).setInteractive({ useHandCursor:true }).on(
             'pointerdown', () => this.onClick()
@@ -47,12 +71,26 @@ class menuScene extends Phaser.Scene {
         })
 
         this.add.tween ({
+            targets: this.score,
+            duration: 2 * 1000,
+            alpha: 0
+        })
+
+        this.add.tween ({
+            targets: this.highScore,
+            duration: 2 * 1000,
+            alpha: 0
+        })
+
+        this.add.tween ({
             targets: this.player,
-            duration: 3 * 1000,
+            duration: 1 * 1000,
             y:config.height * 0.95,
             onComplete:this.cambiaScene,
             callbackScope:this
         })
+
+
     }
 
     cambiaScene() {
