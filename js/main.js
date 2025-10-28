@@ -1,9 +1,11 @@
-var gamePrefs = {
+const gamePrefs = {
     gameWidth:960,
     gameHeight:540,
-    levelWidth:1280,
-    levelHeight:800,
-    GRAVITY:1000
+    level1Width:1280, //40*32
+    level1Height:800, //25*32
+    GRAVITY:1000,
+    HERO_SPEED:200,
+    HERO_JUMP:450
 }
 
 var config = {
@@ -24,4 +26,3 @@ var config = {
 }
 
 var game = new Phaser.Game(config);
-
